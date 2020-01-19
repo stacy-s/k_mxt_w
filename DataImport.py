@@ -1,5 +1,6 @@
 from abc import abstractmethod
 import pandas as pd
+import datetime
 
 
 class DataImport:
@@ -41,7 +42,7 @@ class DataImportSpaceDateTime(DataImportSpace):
 
     def get_data(self):
         x, y = super().get_data()
-        return x, y, pd.to_datetime(self._dataframe[self._name_col_date]).to_list()
+        return x, y, [dt.to_pydatetime() for dt in pd.to_datetime(self._dataframe[self._name_col_date])]
 
 
 
