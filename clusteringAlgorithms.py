@@ -1,14 +1,16 @@
 import ClustersData
 from abc import ABC
 import numpy as np
+import copy
+import graph
 
 
 class Clustering(ABC):
     def __init__(self, clusters_data: ClustersData.ClustersData):
-        self.clustersData = clusters_data
+        self.clustersData = copy.deepcopy(clusters_data)
 
 
-class K_mxt(Clustering):
+class K_MXT(Clustering):
     def __init__(self, k: int, eps: float, clusters_data: ClustersData.ClustersData):
         self.k = k
         self.eps = eps
@@ -52,3 +54,6 @@ class K_mxt(Clustering):
 
     def __call__(self, *args, **kwargs):
         self.make_start_graph()
+        self.make_k_graph()
+        g = graph.Graph(adj=self.k_graph)
+        self.clusters_data.cluster_numbers = g.find_scc()
