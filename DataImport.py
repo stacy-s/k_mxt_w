@@ -1,9 +1,9 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 import pandas as pd
 import datetime
 
 
-class DataImport:
+class DataImport(ABC):
     @abstractmethod
     def __init__(self, filename, sep=','):
         self._filename = filename
@@ -11,7 +11,7 @@ class DataImport:
         self._dataframe = None
 
 
-class DataImportMixin(object):
+class DataImportMixin:
     chosen_columns = None
 
     def _read_data(self):
