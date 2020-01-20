@@ -1,4 +1,4 @@
-import ClustersData
+import clustersData
 from abc import ABC
 import numpy as np
 import copy
@@ -6,12 +6,12 @@ import graph
 
 
 class Clustering(ABC):
-    def __init__(self, clusters_data: ClustersData.ClustersData):
+    def __init__(self, clusters_data: clustersData.ClustersData):
         self.clustersData = copy.deepcopy(clusters_data)
 
 
 class K_MXT(Clustering):
-    def __init__(self, k: int, eps: float, clusters_data: ClustersData.ClustersData):
+    def __init__(self, k: int, eps: float, clusters_data: clustersData.ClustersData):
         self.k = k
         self.eps = eps
         self.clusters_data = clusters_data
