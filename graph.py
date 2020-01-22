@@ -5,7 +5,7 @@ import numpy as np
 class Graph:
     def __init__(self, adj):
         self.adj = copy.deepcopy(adj)
-        self.num_vertices = len(self.g)
+        self.num_vertices = len(self.adj)
 
     def get_reverse_graph(self):
         adj = [[] for _ in range(self.num_vertices)]

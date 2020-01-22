@@ -28,7 +28,7 @@ class K_MXT(Clustering):
             self.start_graph[v] = neighbor
 
     def get_arc_weight(self, v, to):
-        return np.intersect1d(self.start_graph[v], self.start_graph[to])
+        return np.intersect1d(self.start_graph[v], self.start_graph[to]).shape[0]
 
     def make_k_graph(self):
         if any(x is None for x in self.start_graph):
@@ -37,23 +37,27 @@ class K_MXT(Clustering):
         weights_v = []
 
         def get_k_max_arcs():
-            weights = np.array(weight_v, dtype=[('weight', float), ('vertex', int)])
+            weights = np.array(weights_v, dtype=[('weight', float), ('vertex', int)])
+            if weights.shape[0] < self.k:
+                return weights['vertex']
             weights.sort(order='weight')
             weights = np.flip(weights)
-            k_value = weights[self.k - 1]
+            k_value = weights['weight'][self.k - 1]
             index_k_value = np.where(weights['weight'] == k_value)[0]
             index_k_value_min, index_k_value_max = index_k_value[0], index_k_value[-1]
             np.random.shuffle(weights[index_k_value_min:index_k_value_max+1])
-            return weights['vertex', :self.k]
+            return weights['vertex'][:self.k]
 
         for v in range(self.num_of_vertices):
-            weight_v = []
+            weights_v = []
             for neighbor in self.start_graph[v]:
                 weights_v.append((self.get_arc_weight(v, neighbor), neighbor))
-                self.k_graph[v] = get_k_max_arcs()
+            self.k_graph[v] = get_k_max_arcs()
 
     def __call__(self, *args, **kwargs):
         self.make_start_graph()
         self.make_k_graph()
         g = graph.Graph(adj=self.k_graph)
         self.clusters_data.cluster_numbers = g.find_scc()
+
+

@@ -1,6 +1,7 @@
 from abc import abstractmethod, ABC
 import pandas as pd
 import datetime
+import numpy as np
 
 
 class DataImport(ABC):
@@ -33,7 +34,7 @@ class DataImportSpace(DataImportMixin, DataImport):
 
     def get_data(self):
         self._read_data()
-        return self._dataframe[self._name_col_x].to_list(), self._dataframe[self._name_col_y].to_list()
+        return self._dataframe[self._name_col_x].to_numpy(), self._dataframe[self._name_col_y].to_numpy()
 
 
 class DataImportSpaceDateTime(DataImportSpace):
@@ -44,7 +45,8 @@ class DataImportSpaceDateTime(DataImportSpace):
 
     def get_data(self):
         x, y = super().get_data()
-        return x, y, [dt.to_pydatetime() for dt in pd.to_datetime(self._dataframe[self._name_col_date])]
+        return x, y, np.array([dt.to_pydatetime() for dt in pd.to_datetime(self._dataframe[self._name_col_date])])
+
 
 
 
