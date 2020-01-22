@@ -21,7 +21,7 @@ colorlover==0.3.0
 command-not-found==0.3
 confuse==1.0.0
 crontab==0.22.4
-cryptography==2.1.4
+cryptography==2.3
 csaps==0.7.0
 cufflinks==0.17.0
 cupshelpers==1.0
