@@ -15,6 +15,11 @@ class ClustersData(ABC):
     def distance(self, point: np.ndarray):
         pass
 
+    @abstractmethod
+    def get_cluster_name(self, cluster_num):
+        if self.cluster_numbers is None:
+            raise TypeError('self.cluster_numbers does not equal None')
+
 
 class MetricsMixin:
     data_ration = None
@@ -42,3 +47,8 @@ class ClustersDataSpaceEuclideanEuclidean(MetricsMixin, ClustersDataSpace):
 
     def distance(self, point: np.ndarray):
         return self.euclidean_distance(point)
+
+    def get_cluster_name(self, cluster_num):
+        return str(self.cluster_numbers[cluster_num])
+
+
