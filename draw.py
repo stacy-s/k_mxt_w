@@ -46,5 +46,5 @@ class DrawingClusters:
         for i in range(clusters_data.num_of_data):
             folium.CircleMarker([clusters_data.x_init[i], clusters_data.y_init[i]],
                                 radius=2, fill=True, color=color[i],
-                                popup=str(clusters_data.cluster_numbers[i])).add_to(fmap)
+                                popup=clusters_data.get_cluster_name(clusters_data.cluster_numbers[i])).add_to(fmap)
         fmap.save(filename + '.html')
