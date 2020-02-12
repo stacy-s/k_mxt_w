@@ -292,12 +292,12 @@ def plot3D_scatter_spb_time():
 
 def plot3D_scatter_spb_day_of_year():
     df = pd.read_csv('/home/ns/documents/институт рисков/k_mxt_w/DjangoPlotLy/site1/app1/data/spb.csv')
-    return plot3D_scatter_z(df, 'day_of_year')
+    return plot3D_scatter_z(df, 'dayofyear')
 
 
 def plot3D_scatter_prague_day_of_year():
     df = pd.read_csv('/home/ns/documents/институт рисков/k_mxt_w/DjangoPlotLy/site1/app1/data/prague.csv')
-    return plot3D_scatter_z(df, 'day_of_year')
+    return plot3D_scatter_z(df, 'dayofyear')
 
 
 def plot3D_scatter_spb_day_of_week():
@@ -342,7 +342,6 @@ def plot3D_scatter(x, y, z, x_label='x', y_label='y', z_label='z'):
         z=z,
         mode='markers',
     )
-
     data = [trace1]
     layout = go.Layout(
         height=1000,
@@ -354,6 +353,7 @@ def plot3D_scatter(x, y, z, x_label='x', y_label='y', z_label='z'):
         ),
     )
     fig = go.Figure(data=data, layout=layout)
+    fig.update_traces(marker=dict(size=2))
     fig.update_layout(scene=dict(
         xaxis_title=x_label,
         yaxis_title=y_label,
