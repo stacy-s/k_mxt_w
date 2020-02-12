@@ -2,6 +2,7 @@ import datetime
 import glob
 import logging
 import os
+import pandas as pd
 
 import numpy as np
 import plotly.graph_objs as go
@@ -278,33 +279,42 @@ def plotLive():
     plot_div = plot(fig, output_type='div', include_plotlyjs=False)
     return plot_div
 
-def plot3D_scatter():
 
-    x, y, z = np.random.rand(3,100)
+def plot3D_scatter_prague_time_per_minute():
+    df = pd.read_csv('/home/ns/documents/институт рисков/k_mxt_w/DjangoPlotLy/site1/app1/data/prague.csv')
+    return plot3D_scatter_time_per_minute(df)
 
-    current_dir = os.path.dirname(os.path.realpath(__file__))
-    data_file = os.path.join(current_dir,'data', 'cat.csv')
-    csv = np.genfromtxt(data_file, delimiter=None,  comments='#')
-    cat_x = csv[:, 0]
-    cat_y = csv[:, 1]
-    cat_z = csv[:, 2]
 
-    x = np.hstack([x, (cat_x-cat_x.min())/(cat_x.max()-cat_x.min())])
-    y = np.hstack([y, (cat_y-cat_y.min())/(cat_y.max()-cat_y.min())])
-    z = np.hstack([z, (cat_z-cat_z.min())/(cat_z.max()-cat_z.min())])
+def plot3D_scatter_time_per_minute(df):
+    x_label = 'latitude'
+    y_label = 'longitude'
+    z_label = 'time_per_minute'
+    x = df[x_label]
+    y = df[y_label]
+    z = df[z_label]
+    return plot3D_scatter(x, y, z, x_label=x_label, y_label=y_label, z_label=z_label)
+
+
+def plot3D_scatter(x, y, z, x_label='x', y_label='y', z_label='z'):
+
+    # x, y, z = np.random.rand(3,100)
+    #
+    # current_dir = os.path.dirname(os.path.realpath(__file__))
+    # data_file = os.path.join(current_dir,'data', 'cat.csv')
+    # csv = np.genfromtxt(data_file, delimiter=None,  comments='#')
+    # cat_x = csv[:, 0]
+    # cat_y = csv[:, 1]
+    # cat_z = csv[:, 2]
+    #
+    # x = np.hstack([x, (cat_x-cat_x.min())/(cat_x.max()-cat_x.min())])
+    # y = np.hstack([y, (cat_y-cat_y.min())/(cat_y.max()-cat_y.min())])
+    # z = np.hstack([z, (cat_z-cat_z.min())/(cat_z.max()-cat_z.min())])
 
     trace1 = go.Scatter3d(
         x=x,
         y=y,
         z=z,
         mode='markers',
-        marker=dict(
-            size=12,
-            color=x+z,                # set color to an array/list of desired values
-            colorscale='Viridis',   # choose a colorscale
-            opacity=0.5,
-            symbol='square',
-        )
     )
 
     data = [trace1]
@@ -315,8 +325,13 @@ def plot3D_scatter():
             r=0,
             b=0,
             t=0
-        )
+        ),
     )
     fig = go.Figure(data=data, layout=layout)
+    fig.update_layout(scene=dict(
+        xaxis_title=x_label,
+        yaxis_title=y_label,
+        zaxis_title=z_label),
+    )
     plot_div = plot(fig, output_type='div', include_plotlyjs=False)
     return plot_div
