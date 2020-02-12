@@ -280,15 +280,41 @@ def plotLive():
     return plot_div
 
 
-def plot3D_scatter_prague_time_per_minute():
+def plot3D_scatter_prague_time():
     df = pd.read_csv('/home/ns/documents/институт рисков/k_mxt_w/DjangoPlotLy/site1/app1/data/prague.csv')
-    return plot3D_scatter_time_per_minute(df)
+    return plot3D_scatter_z(df, 'time_per_minute')
 
 
-def plot3D_scatter_time_per_minute(df):
+def plot3D_scatter_spb_time():
+    df = pd.read_csv('/home/ns/documents/институт рисков/k_mxt_w/DjangoPlotLy/site1/app1/data/spb.csv')
+    return plot3D_scatter_z(df, 'time_per_minute')
+
+
+def plot3D_scatter_spb_day_of_year():
+    df = pd.read_csv('/home/ns/documents/институт рисков/k_mxt_w/DjangoPlotLy/site1/app1/data/spb.csv')
+    return plot3D_scatter_z(df, 'day_of_year')
+
+
+def plot3D_scatter_prague_day_of_year():
+    df = pd.read_csv('/home/ns/documents/институт рисков/k_mxt_w/DjangoPlotLy/site1/app1/data/prague.csv')
+    return plot3D_scatter_z(df, 'day_of_year')
+
+
+def plot3D_scatter_spb_day_of_week():
+    df = pd.read_csv('/home/ns/documents/институт рисков/k_mxt_w/DjangoPlotLy/site1/app1/data/spb.csv')
+    return plot3D_scatter_z(df, 'day_of_week')
+
+
+def plot3D_scatter_prague_day_of_week():
+    df = pd.read_csv('/home/ns/documents/институт рисков/k_mxt_w/DjangoPlotLy/site1/app1/data/prague.csv')
+    return plot3D_scatter_z(df, 'day_of_week')
+
+
+
+def plot3D_scatter_z(df, name_col_z):
     x_label = 'latitude'
     y_label = 'longitude'
-    z_label = 'time_per_minute'
+    z_label = name_col_z
     x = df[x_label]
     y = df[y_label]
     z = df[z_label]

@@ -34,8 +34,28 @@
       <td><a class="btn btn-default" href="{% url 'app1:plot_live' %}" role="button">View</a></td>
     </tr>
     <tr>
-      <td>3D Scatter</td>
-      <td><a class="btn btn-default" href="{% url 'app1:plot3d_scatter' %}" role="button">View</a></td>
+      <td>3D Scatter. Prague (z=time) </td>
+      <td><a class="btn btn-default" href="{% url 'app1:plot3d_scatter_time_prague' %}" role="button">View</a></td>
+    </tr>
+    <tr>
+      <td>3D Scatter. Spb (z=time) </td>
+      <td><a class="btn btn-default" href="{% url 'app1:plot3d_scatter_time_spb' %}" role="button">View</a></td>
+    </tr>
+    <tr>
+      <td>3D Scatter. Prague (z=day of year) </td>
+      <td><a class="btn btn-default" href="{% url 'app1:plot3d_scatter_year_day_prague' %}" role="button">View</a></td>
+    </tr>
+    <tr>
+      <td>3D Scatter. Spb (z=day of year) </td>
+      <td><a class="btn btn-default" href="{% url 'app1:plot3d_scatter_year_day_spb' %}" role="button">View</a></td>
+    </tr>
+    <tr>
+      <td>3D Scatter. Prague (z=day of week) </td>
+      <td><a class="btn btn-default" href="{% url 'app1:plot3d_scatter_week_day_prague' %}" role="button">View</a></td>
+    </tr>
+    <tr>
+      <td>3D Scatter. Spb (z=day of week) </td>
+      <td><a class="btn btn-default" href="{% url 'app1:plot3d_scatter_week_day_spb' %}" role="button">View</a></td>
     </tr>
   </table>
 </div>

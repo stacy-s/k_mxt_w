@@ -15,7 +15,12 @@ urlpatterns = [
     url(r'^plotIq/$', views.PlotIqView.as_view(), name='plotIq'),
     url(r'^plot_live/$', views.PlotLiveView.as_view(), name='plot_live'),
     url(r'^plot_live_update/$', views.plot_live_update, name='plot_live_update'),
-    url(r'^plot3d_scatter/$', views.Plot3DScatterView.as_view(), name='plot3d_scatter'),
+    url(r'^prague/time/$', views.Plot3DScatterViewPragueTime.as_view(), name='plot3d_scatter_time_prague'),
+    url(r'^spb/time/$', views.Plot3DScatterViewSpbTime.as_view(), name='plot3d_scatter_time_spb'),
+    url(r'^prague/day_of_year/$', views.Plot3DScatterViewPragueDayOfYear.as_view(), name='plot3d_scatter_year_day_prague'),
+    url(r'^spb/day_of_year/$', views.Plot3DScatterViewSpbDayOfYear.as_view(), name='plot3d_scatter_year_day_spb'),
+    url(r'^prague/day_of_week/$', views.Plot3DScatterViewPragueDayOfWeek.as_view(), name='plot3d_scatter_week_day_prague'),
+    url(r'^spb/day_of_week/$', views.Plot3DScatterViewSpbDayOfWeek.as_view(), name='plot3d_scatter_week_day_spb'),
 
 
 ]

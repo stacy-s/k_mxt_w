@@ -95,11 +95,72 @@ def plot_live_update(request):
     else:
         return HttpResponseBadRequest()
 
-class Plot3DScatterView(TemplateView):
+
+class Plot3DScatterViewPragueTime(TemplateView):
     template_name = "plot.html"
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
-        context = super(Plot3DScatterView, self).get_context_data(**kwargs)
-        context['plot'] = plots.plot3D_scatter_time_per_minute
+        context = super(Plot3DScatterViewPragueTime, self).get_context_data(**kwargs)
+        context['plot'] = plots.plot3D_scatter_prague_time
+        return context
+
+
+class Plot3DScatterViewSpbTime(TemplateView):
+    template_name = "plot.html"
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(Plot3DScatterViewSpbTime, self).get_context_data(**kwargs)
+        context['plot'] = plots.plot3D_scatter_spb_time
+        return context
+
+
+class Plot3DScatterViewSpbTime(TemplateView):
+    template_name = "plot.html"
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(Plot3DScatterViewSpbTime, self).get_context_data(**kwargs)
+        context['plot'] = plots.plot3D_scatter_spb_time
+        return context
+
+
+class Plot3DScatterViewSpbDayOfYear(TemplateView):
+    template_name = "plot.html"
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(Plot3DScatterViewSpbDayOfYear, self).get_context_data(**kwargs)
+        context['plot'] = plots.plot3D_scatter_spb_day_of_year()
+        return context
+
+
+class Plot3DScatterViewPragueDayOfYear(TemplateView):
+    template_name = "plot.html"
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(Plot3DScatterViewPragueDayOfYear, self).get_context_data(**kwargs)
+        context['plot'] = plots.plot3D_scatter_prague_day_of_year()
+        return context
+
+
+class Plot3DScatterViewSpbDayOfWeek(TemplateView):
+    template_name = "plot.html"
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(Plot3DScatterViewSpbDayOfWeek, self).get_context_data(**kwargs)
+        context['plot'] = plots.plot3D_scatter_spb_day_of_week()
+        return context
+
+
+class Plot3DScatterViewPragueDayOfWeek(TemplateView):
+    template_name = "plot.html"
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(Plot3DScatterViewPragueDayOfWeek, self).get_context_data(**kwargs)
+        context['plot'] = plots.plot3D_scatter_prague_day_of_week()
         return context
