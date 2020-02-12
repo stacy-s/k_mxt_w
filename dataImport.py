@@ -16,7 +16,7 @@ class DataImportMixin:
     chosen_columns = None
 
     def _read_data(self):
-        self._dataframe = pd.read_csv(self._filename, sep=self._sep)
+        self._dataframe = pd.read_csv(self._filename, sep=self._sep, low_memory=False)
         self._dataframe = self._dataframe[self.chosen_columns]
         self._dataframe = self._dataframe.dropna()
         self._dataframe = self._dataframe[self.chosen_columns].drop_duplicates(keep='first')

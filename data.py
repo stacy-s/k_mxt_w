@@ -12,7 +12,7 @@ class DataFrameInput:
         self.city = copy.copy(city)
 
     def read_csv(self):
-        self.df = pd.read_csv(self.city.path_csv, index_col=None)
+        self.df = pd.read_csv(self.city.path_csv, index_col=None, low_memory=False)
 
     def make_plot_3d(self, z):
         p = plt.figure(figsize=(45, 45)).gca(projection='3d')

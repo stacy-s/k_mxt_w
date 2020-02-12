@@ -21,7 +21,7 @@ class K_MXT(Clustering):
 
     def make_start_graph(self):
         for v in range(self.clusters_data.num_of_data):
-            dst = self.clusters_data.distance(self.clusters_data.data_ration[v])
+            dst = self.clusters_data.distance(v)
             neighbor = np.where(dst <= self.eps)[0]
             index_v = np.argwhere(neighbor == v)
             neighbor = np.delete(neighbor, index_v)

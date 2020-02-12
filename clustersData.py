@@ -24,10 +24,24 @@ class ClustersData(ABC):
 
 class MetricsMixin:
     data_ration = None
+    time_init = None
 
     # def euclidean_distance(self, point: np.ndarray, start_pos: int, stop_pos: int):
-    def euclidean_distance(self, point: np.ndarray):
-        return np.sqrt(np.sum((self.data_ration - point) ** 2, axis=1))
+    def euclidean_distance(self, num_point: np.ndarray):
+        return np.sqrt(np.sum((self.data_ration - self.data_ration[num_point]) ** 2, axis=1))
+
+    # def euclidean_distance_dependent_on_time(self, num_point):
+    #     dst = self.euclidean_distance(num_point)
+    #     INF = 1e9
+    #     subtraction_time = []
+    #     max_subtraction = datetime.timedelta(hour=3)
+    #     for d in dst:
+    #         if abs(d - self.time_init) > max_subtraction:
+    #             subtraction_time.append(INF)
+    #         else:
+    #             subtraction_time.append(d)
+
+
 
 
 class ClustersDataSpace(ClustersData, ABC):
@@ -51,7 +65,8 @@ class ClustersDataSpaceEuclidean(MetricsMixin, ClustersDataSpace):
         return self.euclidean_distance(point)
 
     def get_cluster_name(self, cluster_num):
-        return str(self.cluster_numbers[cluster_num])
+        super().get_cluster_name(cluster_num)
+        return str(cluster_num)
 
 
 class ClustersDataSpaceTime(ClustersDataSpace, ABC):
