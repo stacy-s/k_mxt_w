@@ -27,8 +27,12 @@ class MetricsMixin:
     time_init = None
 
     # def euclidean_distance(self, point: np.ndarray, start_pos: int, stop_pos: int):
-    def euclidean_distance(self, num_point: np.ndarray):
+    def euclidean_distance(self, num_point):
         return np.sqrt(np.sum((self.data_ration - self.data_ration[num_point]) ** 2, axis=1))
+
+    def euclidean_distance_according_time(self, num_point):
+        distance = np.sqrt(np.sum((self.data_ration[:, :2] - self.data_ration[num_point][:2]) ** 2, axis=1))
+        return
 
     # def euclidean_distance_dependent_on_time(self, num_point):
     #     dst = self.euclidean_distance(num_point)
@@ -40,8 +44,6 @@ class MetricsMixin:
     #             subtraction_time.append(INF)
     #         else:
     #             subtraction_time.append(d)
-
-
 
 
 class ClustersDataSpace(ClustersData, ABC):
@@ -99,6 +101,3 @@ class ClustersDataSpaceTimeEuclidean(MetricsMixin, ClustersDataSpaceTime):
 
     def distance(self, point: np.ndarray):
         return self.euclidean_distance(point)
-
-
-
