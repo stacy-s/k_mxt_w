@@ -3,6 +3,9 @@ from abc import ABC
 import numpy as np
 import copy
 import graph
+import logging
+
+logger = logging.getLogger('k_mxt_w.clustering_algorithm')
 
 
 class Clustering(ABC):
@@ -12,12 +15,14 @@ class Clustering(ABC):
 
 class K_MXT(Clustering):
     def __init__(self, k: int, eps: float, clusters_data: clustersData.ClustersData):
+        logger.info(f'init k-{k}, eps-{eps}, clusters_data-{clusters_data}')
         self.k = k
         self.eps = eps
         self.clusters_data = clusters_data
         self.num_of_vertices = self.clusters_data.num_of_data
         self.start_graph = [None for _ in range(self.num_of_vertices)]
         self.k_graph = [None for _ in range(self.num_of_vertices)]
+        logger.info(f'init has done.')
 
     def make_start_graph(self):
         for v in range(self.clusters_data.num_of_data):
@@ -55,9 +60,11 @@ class K_MXT(Clustering):
             self.k_graph[v] = get_k_max_arcs()
 
     def __call__(self, *args, **kwargs):
+        logger.info(f'clustering has started')
         self.make_start_graph()
         self.make_k_graph()
         g = graph.Graph(adj=self.k_graph)
         self.clusters_data.cluster_numbers = g.find_scc()
+        logger.info(f'clustering has finished')
 
 
