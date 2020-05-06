@@ -30,6 +30,9 @@ class MetricsMixin:
     def euclidean_distance(self, num_point):
         return np.sqrt(np.sum((self.data_ration - self.data_ration[num_point]) ** 2, axis=1))
 
+    def euclidean_distance(self, point1, point2):
+        return np.sqrt(np.sum((self.data_ration[point1] - self.data_ration[point2]) ** 2, axis=1))
+
     def euclidean_distance_according_time(self, num_point):
         distance = np.sqrt(np.sum((self.data_ration[:, :2] - self.data_ration[num_point][:2]) ** 2, axis=1))
         return
@@ -63,8 +66,11 @@ class ClustersDataSpaceEuclidean(MetricsMixin, ClustersDataSpace):
         self.data_ration = np.array([ClustersData.array_rationing(self.x_init),
                                      ClustersData.array_rationing(self.y_init)]).transpose()
 
-    def distance(self, point: np.ndarray):
+    def distance(self, point):
         return self.euclidean_distance(point)
+
+    def distance(self, point1, point2):
+        return self.euclidean_distance(point1, point2)
 
     def get_cluster_name(self, cluster_num):
         super().get_cluster_name(cluster_num)

@@ -1,9 +1,11 @@
-import clustersData
 from abc import ABC
 import numpy as np
 import copy
 import graph
 import logging
+import scipy.stats
+
+import clustersData
 
 logger = logging.getLogger('k_mxt_w.clustering_algorithm')
 
@@ -66,5 +68,17 @@ class K_MXT(Clustering):
         g = graph.Graph(adj=self.k_graph)
         self.clusters_data.cluster_numbers = g.find_scc()
         logger.info(f'clustering has finished')
+
+
+class K_MXT_gauss(K_MXT):
+    def __init__(self,  k: int, eps: float, clusters_data: clustersData.ClustersData):
+        super.__init__(k=k, eps=eps, clusters_data=clusters_data)
+        self.sigma = eps / 3
+        self.norm = scipy.stats.norm(0, self.sigma)
+
+    def get_arc_weight(self, v, to):
+        return np.gauss(self.norm.pdf(self.clusters_data.distance(v, to))) * super.get_arc_weight(v, to)
+
+
 
 
