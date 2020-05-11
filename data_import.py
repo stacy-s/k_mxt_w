@@ -23,23 +23,26 @@ class DataImportMixin:
 
     def _read_data(self):
         self._dataframe = pd.read_csv(self._filename, sep=self._sep, low_memory=False)
-        self._dataframe = self._dataframe[self.chosen_columns]
 
 
 class DataCrimeImportSpace(DataImportMixin, DataImport):
     def __init__(self, filename, sep=','):
-        super.__init__(filename, sep)
+        super().__init__(filename, sep)
+        logger.info(f'filename-{self._filename}, sep-{sep}')
+        self._read_data()
 
-    def filter_type_crime(self, name_type_crime, need_values):
-        self._dataframe = self._dataframe[self._dateframe[name_type_crime] == need_values]
-        self._dataframe = self._dataframe[self._dataframe[name_type_crime].isin(need_values)]
+    def filter_type_crime(self, name_type_crime_col, need_values):
+        self._dataframe = self._dataframe[self._dataframe[name_type_crime_col].isin(need_values)]
 
-    def get_coordinates(self, name_location_col):
+    def get_data(self, name_location_col):
         coordinates = self._dataframe[name_location_col].map(lambda x: re.split(
             r'[,]',
-            re.sub(r'[()-]', '', x)
+            re.sub(r'[()]', '', x)
         ))
-        return np.array([coordinates[0], coordinates[1]].map(lambda x: x.to_numpy()))
+        x = coordinates.map(lambda x: x[0])
+        y = coordinates.map(lambda x: x[1])
+        return x.to_numpy(), y.to_numpy()
+
 
 #
 #

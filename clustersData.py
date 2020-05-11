@@ -63,8 +63,8 @@ class ClustersDataSpace(ClustersData, ABC):
 class ClustersDataSpaceEuclidean(MetricsMixin, ClustersDataSpace):
     def __init__(self, x_init: np.ndarray, y_init: np.ndarray):
         super().__init__(x_init, y_init)
-        self.data_ration = np.array([ClustersData.array_rationing(self.x_init),
-                                     ClustersData.array_rationing(self.y_init)]).transpose()
+        self.data_ration = np.array([self.x_init,
+                                     self.y_init]).transpose()
 
     def distance(self, point):
         return self.euclidean_distance(point)
@@ -77,33 +77,33 @@ class ClustersDataSpaceEuclidean(MetricsMixin, ClustersDataSpace):
         return str(cluster_num)
 
 
-class ClustersDataSpaceTime(ClustersDataSpace, ABC):
-    def __init__(self, x_init: np.ndarray, y_init: np.ndarray, time_init: np.ndarray):
-        super().__init__(x_init, y_init)
-        if x_init.shape != time_init.shape:
-            raise ValueError('x_init and time_init must be the same dimension')
-        self.time_init = time_init.copy()
-        self.data_ration = np.array([ClustersData.array_rationing(self.x_init),
-                                     ClustersData.array_rationing(self.y_init),
-                                     ClustersDataSpaceTime._array_rationing_time(self.time_init)]).transpose()
-
-    @staticmethod
-    def _array_rationing_time(array):
-        time = np.array(
-            [datetime.timedelta(hours=x.hour, minutes=x.minute, seconds=x.second).total_seconds() for x in array]
-        )
-        return ClustersData.array_rationing(time)
-
-    def get_cluster_name(self, cluster_num):
-        times = [self.time_init[i] for i, x in enumerate(self.cluster_numbers) if x == cluster_num]
-        min_time = str(min(times))
-        max_time = str(max(times))
-        return ' '.join([str(self.cluster_numbers[cluster_num]), min_time, max_time])
-
-
-class ClustersDataSpaceTimeEuclidean(MetricsMixin, ClustersDataSpaceTime):
-    def __init__(self, x_init: np.ndarray, y_init: np.ndarray, time_init: np.ndarray):
-        super().__init__(x_init, y_init, time_init)
-
-    def distance(self, point: np.ndarray):
-        return self.euclidean_distance(point)
+# class ClustersDataSpaceTime(ClustersDataSpace, ABC):
+#     def __init__(self, x_init: np.ndarray, y_init: np.ndarray, time_init: np.ndarray):
+#         super().__init__(x_init, y_init)
+#         if x_init.shape != time_init.shape:
+#             raise ValueError('x_init and time_init must be the same dimension')
+#         self.time_init = time_init.copy()
+#         self.data_ration = np.array([ClustersData.array_rationing(self.x_init),
+#                                      ClustersData.array_rationing(self.y_init),
+#                                      ClustersDataSpaceTime._array_rationing_time(self.time_init)]).transpose()
+#
+#     @staticmethod
+#     def _array_rationing_time(array):
+#         time = np.array(
+#             [datetime.timedelta(hours=x.hour, minutes=x.minute, seconds=x.second).total_seconds() for x in array]
+#         )
+#         return ClustersData.array_rationing(time)
+#
+#     def get_cluster_name(self, cluster_num):
+#         times = [self.time_init[i] for i, x in enumerate(self.cluster_numbers) if x == cluster_num]
+#         min_time = str(min(times))
+#         max_time = str(max(times))
+#         return ' '.join([str(self.cluster_numbers[cluster_num]), min_time, max_time])
+#
+#
+# class ClustersDataSpaceTimeEuclidean(MetricsMixin, ClustersDataSpaceTime):
+#     def __init__(self, x_init: np.ndarray, y_init: np.ndarray, time_init: np.ndarray):
+#         super().__init__(x_init, y_init, time_init)
+#
+#     def distance(self, point: np.ndarray):
+#         return self.euclidean_distance(point)
