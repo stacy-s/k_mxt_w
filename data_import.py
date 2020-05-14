@@ -44,6 +44,17 @@ class DataCrimeImportSpace(DataImportMixin, DataImport):
         return x.to_numpy(), y.to_numpy()
 
 
+class DataAirbnbImportSpace(DataImportMixin, DataImport):
+    def __init__(self, filename, sep=','):
+        super().__init__(filename, sep)
+        logger.info(f'filename-{self._filename}, sep-{sep}')
+        self._read_data()
+
+    def get_data(self, name_latitude_cols='latitude', name_longitude_cols='longitude'):
+        x = self._dataframe[name_latitude_cols].to_numpy()
+        y = self._dataframe[name_longitude_cols].to_numpy()
+        return x, y
+
 #
 #
 #
