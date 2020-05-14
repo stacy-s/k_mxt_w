@@ -92,7 +92,7 @@ class ClustersDataSpaceFeatures(ClustersDataSpace, ABC):
                                              super().array_rationing(self.time_init)]).transpose()
 
 
-class ClustersDataSpaceFeatures(ClustersDataSpace, ABC):
+class ClustersDataSpaceFeaturesEuclidean(MetricsMixin, ClustersDataSpaceFeatures, ABC):
     def __init__(self, x_init: np.ndarray, y_init: np.ndarray, features_init: np.ndarray):
         super().__init__(x_init, y_init, features_init)
 

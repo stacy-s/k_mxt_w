@@ -55,6 +55,13 @@ class DataAirbnbImportSpace(DataImportMixin, DataImport):
         y = self._dataframe[name_longitude_cols].to_numpy()
         return x, y
 
+
+class DataAirbnbImportSpaceFeatures(DataImportMixin, DataAirbnbImportSpace):
+    def  __init__(self, filename, features_list, sep=','):
+        super().__init__(filename, sep)
+        self.features_list = features_list
+        self.features = self._dataframe(features_list).to_numpy()
+
 #
 #
 #
