@@ -1,6 +1,9 @@
 import numpy as np
 from abc import ABC, abstractmethod
+import logging
 import datetime
+
+logger = logging.getLogger('k_mxt_w.clusters_data')
 
 
 class ClustersData(ABC):
