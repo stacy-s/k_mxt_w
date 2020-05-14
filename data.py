@@ -2,7 +2,7 @@ import pandas as pd
 import pandas_profiling
 import copy
 import matplotlib.pyplot as plt
-import clustersData
+import clusters_data
 
 
 class DataFrameInput:

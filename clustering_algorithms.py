@@ -5,18 +5,18 @@ import graph
 import logging
 import scipy.stats
 
-import clustersData
+import clusters_data
 
 logger = logging.getLogger('k_mxt_w.clustering_algorithm')
 
 
 class Clustering(ABC):
-    def __init__(self, clusters_data: clustersData.ClustersData):
+    def __init__(self, clusters_data: clusters_data.ClustersData):
         self.clustersData = copy.deepcopy(clusters_data)
 
 
 class K_MXT(Clustering):
-    def __init__(self, k: int, eps: float, clusters_data: clustersData.ClustersData):
+    def __init__(self, k: int, eps: float, clusters_data: clusters_data.ClustersData):
         logger.info(f'init k-{k}, eps-{eps}, clusters_data-{clusters_data}')
         self.k = k
         self.eps = eps
@@ -71,7 +71,7 @@ class K_MXT(Clustering):
 
 
 class K_MXT_gauss(K_MXT):
-    def __init__(self,  k: int, eps: float, clusters_data: clustersData.ClustersData):
+    def __init__(self, k: int, eps: float, clusters_data: clusters_data.ClustersData):
         super().__init__(k=k, eps=eps, clusters_data=clusters_data)
         self.sigma = eps / 3
         self.norm = scipy.stats.norm(0, self.sigma)

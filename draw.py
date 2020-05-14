@@ -1,4 +1,4 @@
-import clustersData
+import clusters_data
 import collections
 import random
 import matplotlib.pyplot as plt
@@ -26,14 +26,14 @@ class DrawingClusters:
         return [cluster_colors[x] for x in clusters_data.cluster_numbers]
 
     @classmethod
-    def drawing_plot(cls, clusters_data: clustersData.ClustersData, max_noise_size=1):
+    def drawing_plot(cls, clusters_data: clusters_data.ClustersData, max_noise_size=1):
         color = DrawingClusters.__get_dots_colors(clusters_data, max_noise_size)
         plt.figure(figsize=(35, 35))
         plt.scatter(x=clusters_data.x_init, y=clusters_data.y_init, c=color)
         plt.show()
 
     @classmethod
-    def drawing_map(cls, clusters_data: clustersData.ClustersData, filename, city_lat, city_long, max_noise_size=1, color=None):
+    def drawing_map(cls, clusters_data: clusters_data.ClustersData, filename, city_lat, city_long, max_noise_size=1, color=None):
         # color = DrawingClusters.__get_dots_colors(clusters_data, max_noise_size)
         color = [f'#{c}{c}{c}' for c in color.to_numpy()]
         fmap = folium.Map([city_lat, city_long])

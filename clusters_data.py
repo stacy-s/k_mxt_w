@@ -37,6 +37,7 @@ class MetricsMixin:
         distance = np.sqrt(np.sum((self.data_ration[:, :2] - self.data_ration[num_point][:2]) ** 2, axis=1))
         return
 
+
     # def euclidean_distance_dependent_on_time(self, num_point):
     #     dst = self.euclidean_distance(num_point)
     #     INF = 1e9
@@ -77,6 +78,33 @@ class ClustersDataSpaceEuclidean(MetricsMixin, ClustersDataSpace):
         return str(cluster_num)
 
 
+class ClustersDataSpaceFeatures(ClustersDataSpace, ABC):
+    def __init__(self, x_init: np.ndarray, y_init: np.ndarray, features_init: np.ndarray):
+        """
+        :param x_init:
+        :param y_init:
+        :param features_init: each row corresponds to a single data point.
+        """
+        super().__init__(x_init, y_init)
+        self.features_init = features_init.copy()
+        self.data_ration = np.array([ClustersData.array_rationing(self.x_init),
+                                             super().array_rationing(self.y_init),
+                                             super().array_rationing(self.time_init)]).transpose()
+
+
+class ClustersDataSpaceFeatures(ClustersDataSpace, ABC):
+    def __init__(self, x_init: np.ndarray, y_init: np.ndarray, features_init: np.ndarray):
+        super().__init__(x_init, y_init, features_init)
+
+    def distance(self, point):
+        return self.euclidean_distance(point)
+
+    def distance(self, point1, point2):
+        return self.euclidean_distance(point1, point2)
+
+
+
+#
 # class ClustersDataSpaceTime(ClustersDataSpace, ABC):
 #     def __init__(self, x_init: np.ndarray, y_init: np.ndarray, time_init: np.ndarray):
 #         super().__init__(x_init, y_init)
@@ -99,7 +127,7 @@ class ClustersDataSpaceEuclidean(MetricsMixin, ClustersDataSpace):
 #         min_time = str(min(times))
 #         max_time = str(max(times))
 #         return ' '.join([str(self.cluster_numbers[cluster_num]), min_time, max_time])
-#
+
 #
 # class ClustersDataSpaceTimeEuclidean(MetricsMixin, ClustersDataSpaceTime):
 #     def __init__(self, x_init: np.ndarray, y_init: np.ndarray, time_init: np.ndarray):

@@ -4,7 +4,7 @@ import time
 import numpy as np
 
 import clustering_algorithms
-import clustersData
+import clusters_data
 import data_import
 import draw
 
@@ -12,7 +12,6 @@ logger = logging.getLogger('k_mxt_w')
 
 
 def main():
-    print('hello')
     logger.setLevel(logging.INFO)
     fh = logging.FileHandler('k_mxt_w.log')
     formatter = logging.Formatter('%(filename)s func:%(funcName)s [LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]' +
@@ -28,7 +27,7 @@ def main():
         print(len(x))
         for k in [3]:
             for eps in [0.2]:
-                clusters_data = clustersData.ClustersDataSpaceEuclidean(x_init=x, y_init=y)
+                clusters_data = clusters_data.ClustersDataSpaceEuclidean(x_init=x, y_init=y)
                 alg = clustering_algorithms.K_MXT(k=k, eps=eps, clusters_data=clusters_data)
                 start_time = time.time()
                 # alg()
