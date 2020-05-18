@@ -1,4 +1,3 @@
-import collections
 import logging
 import time
 import numpy as np
@@ -23,19 +22,22 @@ def main():
         sf_filename = '../data/AB_NYC_2019.csv'
         data = data_import.DataAirbnbImportSpace(filename=sf_filename)
         latitude, longitude = (40.730610, -73.935242)
-        x, y = data.get_data()
+        features_list = ['price']
+        x, y, features = data.get_data(features_list=features_list)
         print(len(x))
         for k in [3]:
             for eps in [0.2]:
-                clusters_data = clusters_data.ClustersDataSpaceEuclidean(x_init=x, y_init=y)
-                alg = clustering_algorithms.K_MXT(k=k, eps=eps, clusters_data=clusters_data)
+                print(x, y, features)
+                clusters = clusters_data.ClustersDataSpaceFeaturesEuclidean(x_init=x, y_init=y, features_init=features)
+                alg = clustering_algorithms.K_MXT(k=k, eps=eps, clusters_data=clusters)
                 start_time = time.time()
-                # alg()
+                alg()
                 end_time = time.time()
                 print(f'k-{k}, eps-{eps}, time-{end_time - start_time}')
-                draw.DrawingClusters.drawing_map(clusters_data,
-                                                 f'./results/airbnb_ny_k_{k}_eps_{eps}',
-                                                 city_lat=latitude, city_long=longitude, max_noise_size=0, color=data._dataframe[data._dataframe['price']<2000]['price'] // 8)
+                print(clusters.cluster_numbers)
+                # draw.DrawingClusters.drawing_map(clusters_data,
+                #                                  f'./results/airbnb_ny_k_{k}_eps_{eps}',
+                #                                  city_lat=latitude, city_long=longitude, max_noise_size=0, color=data._dataframe[data._dataframe['price']<2000]['price'] // 8)
     except BaseException as e:
         logger.error(e, exc_info=True)
     logger.info('Done!')

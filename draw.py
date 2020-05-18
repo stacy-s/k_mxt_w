@@ -33,9 +33,8 @@ class DrawingClusters:
         plt.show()
 
     @classmethod
-    def drawing_map(cls, clusters_data: clusters_data.ClustersData, filename, city_lat, city_long, max_noise_size=1, color=None):
-        # color = DrawingClusters.__get_dots_colors(clusters_data, max_noise_size)
-        color = [f'#{c}{c}{c}' for c in color.to_numpy()]
+    def drawing_map(cls, clusters_data: clusters_data.ClustersData, filename, city_lat, city_long, max_noise_size=1):
+        color = DrawingClusters.__get_dots_colors(clusters_data, max_noise_size)
         fmap = folium.Map([city_lat, city_long])
         folium.TileLayer(
             tiles='https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}{r}.png',

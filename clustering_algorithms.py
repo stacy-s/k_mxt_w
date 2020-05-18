@@ -63,8 +63,11 @@ class K_MXT(Clustering):
 
     def __call__(self, *args, **kwargs):
         logger.info(f'clustering has started')
+        logger.info(f'start making start graph')
         self.make_start_graph()
+        logger.info(f'start making k-graph')
         self.make_k_graph()
+        logger.info(f'start finding scc')
         g = graph.Graph(adj=self.k_graph)
         self.clusters_data.cluster_numbers = g.find_scc()
         logger.info(f'clustering has finished')

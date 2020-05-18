@@ -50,17 +50,17 @@ class DataAirbnbImportSpace(DataImportMixin, DataImport):
         logger.info(f'filename-{self._filename}, sep-{sep}')
         self._read_data()
 
-    def get_data(self, name_latitude_cols='latitude', name_longitude_cols='longitude'):
-        x = self._dataframe[name_latitude_cols].to_numpy()
-        y = self._dataframe[name_longitude_cols].to_numpy()
-        return x, y
+    def get_data(self, name_latitude_cols='latitude', name_longitude_cols='longitude', features_list=None):
+        x = self._dataframe[name_latitude_cols].to_numpy(dtype=np.float)
+        y = self._dataframe[name_longitude_cols].to_numpy(dtype=np.float)
+        return x, y, self._dataframe[features_list].to_numpy(dtype=np.float)
 
 
-class DataAirbnbImportSpaceFeatures(DataImportMixin, DataAirbnbImportSpace):
-    def  __init__(self, filename, features_list, sep=','):
-        super().__init__(filename, sep)
-        self.features_list = features_list
-        self.features = self._dataframe(features_list).to_numpy()
+# class DataAirbnbImportSpaceFeatures(DataAirbnbImportSpace):
+#     def  __init__(self, filename, features_list, sep=','):
+#         super().__init__(filename, sep)
+#         self.features_list = features_list
+#         self.features = self._dataframe[features_list].to_numpy()
 
 #
 #
