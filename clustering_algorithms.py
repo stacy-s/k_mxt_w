@@ -47,6 +47,8 @@ class K_MXT(Clustering):
             weights = np.array(weights_v, dtype=[('weight', float), ('vertex', int)])
             if weights.shape[0] < self.k:
                 return weights['vertex']
+            # np.random.shuffle(weights)
+            # index_max = np.argpartition(weights['weight'], -self.k)[-self.k:]
             weights.sort(order='weight')
             weights = np.flip(weights)
             k_value = weights['weight'][self.k - 1]

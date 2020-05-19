@@ -23,6 +23,14 @@ class DrawingClusters:
                 cluster_colors[key] = ''.join(['#', rand_color(), rand_color(), rand_color()])
             else:
                 cluster_colors[key] = 'red'
+            # if key <= 59:
+            #     cluster_colors[key] = 'red'
+            # elif key <= 109:
+            #     cluster_colors[key] = 'blue'
+            # elif key <= 121:
+            #     cluster_colors[key] = 'green'
+            # else:
+            #     cluster_colors[key] = 'black'
         return [cluster_colors[x] for x in clusters_data.cluster_numbers]
 
     @classmethod
@@ -44,7 +52,8 @@ class DrawingClusters:
             attr='My').add_to(fmap)
         folium.LayerControl().add_to(fmap)
         for i in range(clusters_data.num_of_data):
-            folium.CircleMarker([clusters_data.x_init[i], clusters_data.y_init[i]],
-                                radius=1, fill=True, color=color[i],
-                                popup=clusters_data.get_cluster_name(clusters_data.cluster_numbers[i])).add_to(fmap)
+            folium.CircleMarker((clusters_data.x_init[i], clusters_data.y_init[i]),
+                                radius=2, fill=True, color=color[i],
+                                # popup=clusters_data.get_cluster_name(clusters_data.cluster_numbers[i])).add_to(fmap)
+                                popup=str(clusters_data.cluster_numbers[i])).add_to(fmap)
         fmap.save(filename + '.html')

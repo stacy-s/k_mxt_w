@@ -76,10 +76,7 @@ class ClustersDataSpaceEuclidean(MetricsMixin, ClustersDataSpace):
         self.data_ration = np.array([self.x_init,
                                      self.y_init]).transpose()
 
-    def distance(self, point):
-        return self.euclidean_distance(point)
-
-    def distance(self, point1, point2):
+    def distance(self, point1, point2=None):
         return self.euclidean_distance(point1, point2)
 
     def get_cluster_name(self, cluster_num):
@@ -100,9 +97,9 @@ class ClustersDataSpaceFeatures(ClustersDataSpace, ABC):
                                      ClustersData.array_rationing(self.y_init).reshape(-1, 1),
                                      ClustersData.array_rationing(self.features_init)), axis=1)
 
-        def get_cluster_name(self, cluster_num):
-            super().get_cluster_name(cluster_num)
-            return str(cluster_num)
+    def get_cluster_name(self, cluster_num):
+        super().get_cluster_name(cluster_num)
+        return str(cluster_num)
 
 
 class ClustersDataSpaceFeaturesEuclidean(MetricsMixin, ClustersDataSpaceFeatures):
