@@ -82,7 +82,7 @@ class K_MXT_gauss(K_MXT):
         self.norm = scipy.stats.norm(0, self.sigma)
 
     def get_arc_weight(self, v, to):
-        return np.gauss(self.norm.pdf(self.clusters_data.distance(v, to))) * super().get_arc_weight(v, to)
+        return self.norm.pdf(self.clusters_data.distance(v, to)) * super().get_arc_weight(v, to)
 
 
 
