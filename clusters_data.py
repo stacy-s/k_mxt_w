@@ -34,7 +34,7 @@ class MetricsMixin:
             return np.sqrt(np.sum((self.data_ration - self.data_ration[num_point]) ** 2, axis=1))
 
         def euclidean_distance_between2points(point1, point2):
-            return np.sqrt(np.sum((self.data_ration[point1] - self.data_ration[point2]) ** 2))
+            return np.sqrt(np.sum((self.data_ration[point1] - self.data_ration[point2]) ** 2), axis=0)
 
         if point2 is None:
             return euclidean_distance_between_point_array(num_point=point1)
