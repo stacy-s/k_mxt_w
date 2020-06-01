@@ -49,7 +49,7 @@ class ClustersDataSpace(ClustersData, ABC):
         self.x_init = x_init.copy()
         self.y_init = y_init.copy()
         self.data_ration = None
-        self.cluster_numbers = np.full((1, len(self.x_init)), -1)
+        self.cluster_numbers = np.full(len(self.x_init), -1)
         self.num_of_data = self.x_init.shape[0]
 
 
