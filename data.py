@@ -36,6 +36,8 @@ class DataPropertyImportSpace(DataImport):
 class DataSave:
     @classmethod
     def arrays_to_csv(cls, source_filename, new_filename, **kwargs):
+        print(kwargs)
         df = pd.read_csv(source_filename)
-        df.append(kwargs, ignore_index=True)
-        df.to_csv(new_filename)
+        new_df = pd.DataFrame.from_dict(kwargs)
+        res = pd.concat([df, new_df], axis=1)
+        res.to_csv(new_filename)
