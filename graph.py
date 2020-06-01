@@ -1,6 +1,9 @@
 import copy
 import numpy as np
+import logging
 
+
+logger = logging.getLogger('k_mxt_w.clustering_algorithm')
 
 class Graph:
     def __init__(self, adj):

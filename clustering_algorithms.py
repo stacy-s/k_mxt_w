@@ -71,7 +71,7 @@ class K_MXT(Clustering):
         self.make_k_graph()
         logger.info(f'start finding scc')
         g = graph.Graph(adj=self.k_graph)
-        self.clusters_data.cluster_numbers = g.find_scc()
+        self.clusters_data.cluster_numbers = np.array(g.find_scc())
         logger.info(f'clustering has finished')
 
 

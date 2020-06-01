@@ -1,12 +1,4 @@
-branca==0.4.0
-certifi==2020.4.5.1
-chardet==3.0.4
-cycler==0.10.0
-folium==0.10.1
-idna==2.9
-Jinja2==2.11.2
-kiwisolver==1.2.0
-MarkupSafe==1.1.1
+folium==0.11.0
 matplotlib==3.2.1
 numpy==1.18.1
 pandas==1.0.0rc0
@@ -14,7 +6,4 @@ pkg-resources==0.0.0
 pyparsing==2.4.7
 python-dateutil==2.8.1
 pytz==2019.3
-requests==2.23.0
 scipy==1.4.1
-six==1.14.0
-urllib3==1.25.9

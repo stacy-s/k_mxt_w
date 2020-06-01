@@ -1,11 +1,13 @@
 import logging
 import time
 import numpy as np
+import os
 
 import clustering_algorithms
 import clusters_data
-import data_import
+import data
 import draw
+
 
 logger = logging.getLogger('k_mxt_w')
 
@@ -18,31 +20,37 @@ def main():
     fh.setFormatter(formatter)
     logger.addHandler(fh)
     logger.info('Program started')
-    try:
-        #   filename = '../data/AB_NYC_2019.csv'
-        filename = '../data/Airbnb_Texas_Rentals_dropna.csv'
-        data = data_import.DataAirbnbImportSpace(filename=filename)
-        #     latitude, longitude = (40.730610, -73.935242)
-        latitude, longitude = (29.3838500, -94.9027000)
+    # try:
+    filename = '../data/homegate_month_living_dropna.csv'
+    data_property = data.DataPropertyImportSpace(filename=filename)
 
-        features_list = ['price']
-        x, y, features = data.get_data(features_list=features_list)
-        print(len(x))
-        for k in [15]:
-            for eps in [0.1]:
-                print(x, y, features)
-                clusters = clusters_data.ClustersDataSpaceFeaturesEuclidean(x_init=x, y_init=y, features_init=features)
-                alg = clustering_algorithms.K_MXT(k=k, eps=eps, clusters_data=clusters)
-                start_time = time.time()
-                alg()
-                end_time = time.time()
-                print(f'k-{k}, eps-{eps}, time-{end_time - start_time}')
-                draw.DrawingClusters.drawing_map(clusters,
-                                                 f'./results/airbnb_texas_gauss_k_{k}_eps_{eps}',
-                                                 city_lat=latitude, city_long=longitude, max_noise_size=1)
-    except BaseException as e:
-        logger.error(e, exc_info=True)
-    logger.info('Done!')
+    features_list = ['price']
+    x, y, features = data_property.get_data(features_list=features_list)
+    for k in [15]:
+        for eps in [0.1]:
+            clusters = clusters_data.ClustersDataSpaceFeaturesEuclidean(x_init=x, y_init=y, features_init=features)
+            alg = clustering_algorithms.K_MXT(k=k, eps=eps, clusters_data=clusters)
+            start_time = time.time()
+            alg()
+            end_time = time.time()
+            print(f'k-{k}, eps-{eps}, time-{end_time - start_time}')
+            clusters.cluster_numbers = clusters.cluster_numbers.reshape(-1, 1)
+            data.DataSave.arrays_to_csv(new_filename=f'./results/{os.path.basename(filename)}_k_{k}_eps_{eps}.csv',
+                                        lalitude=x, longitude=y, price=features,
+                                        cluster_numbers=clusters.cluster_numbers,
+                                        )
+    draw.Draw.draw_points(filename=filename, lat='latitude', lon='longitude', hover_name='price',
+                          hover_data=['rooms', 'url', 'property_type'],
+                          color='price')
+    # draw.Draw.draw_points(filename=filename, lat='latitude', lon='longitude',
+    #                       hover_name='rent_per_room',
+    #                       hover_data=['price', 'rooms'],
+    #                       color='rent_per_room',
+    #                       )
+
+    # except BaseException as e:
+    #     logger.error(e, exc_info=True)
+    # logger.info('Done!')
 
 
 if __name__ == '__main__':

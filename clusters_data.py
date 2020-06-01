@@ -29,34 +29,17 @@ class MetricsMixin:
     data_ration = None
     time_init = None
 
-    # def euclidean_distance(self, point: np.ndarray, start_pos: int, stop_pos: int):
     def euclidean_distance(self, point1, point2=None):
+        def euclidean_distance_between_point_array(num_point):
+            return np.sqrt(np.sum((self.data_ration - self.data_ration[num_point]) ** 2, axis=1))
+
+        def euclidean_distance_between2points(point1, point2):
+            return np.sqrt(np.sum((self.data_ration[point1] - self.data_ration[point2]) ** 2, axis=1))
+
         if point2 is None:
-            return self.__euclidean_distance_between_point_array(num_point=point1)
+            return euclidean_distance_between_point_array(num_point=point1)
         else:
-            return self.__euclidean_distance_between2points(point1=point1, point2=point2)
-
-    def __euclidean_distance_between_point_array(self, num_point):
-        return np.sqrt(np.sum((self.data_ration - self.data_ration[num_point]) ** 2, axis=1))
-
-    def __euclidean_distance_between2points(self, point1, point2):
-        return np.sqrt(np.sum((self.data_ration[point1] - self.data_ration[point2]) ** 2, axis=1))
-
-    def euclidean_distance_according_time(self, num_point):
-        distance = np.sqrt(np.sum((self.data_ration[:, :2] - self.data_ration[num_point][:2]) ** 2, axis=1))
-        return
-
-
-    # def euclidean_distance_dependent_on_time(self, num_point):
-    #     dst = self.euclidean_distance(num_point)
-    #     INF = 1e9
-    #     subtraction_time = []
-    #     max_subtraction = datetime.timedelta(hour=3)
-    #     for d in dst:
-    #         if abs(d - self.time_init) > max_subtraction:
-    #             subtraction_time.append(INF)
-    #         else:
-    #             subtraction_time.append(d)
+            return euclidean_distance_between2points(point1=point1, point2=point2)
 
 
 class ClustersDataSpace(ClustersData, ABC):
@@ -66,7 +49,7 @@ class ClustersDataSpace(ClustersData, ABC):
         self.x_init = x_init.copy()
         self.y_init = y_init.copy()
         self.data_ration = None
-        self.cluster_numbers = np.full(len(self.x_init), -1)
+        self.cluster_numbers = np.full((1, len(self.x_init)), -1)
         self.num_of_data = self.x_init.shape[0]
 
 
@@ -85,6 +68,7 @@ class ClustersDataSpaceEuclidean(MetricsMixin, ClustersDataSpace):
 
 
 class ClustersDataSpaceFeatures(ClustersDataSpace, ABC):
+
     def __init__(self, x_init: np.ndarray, y_init: np.ndarray, features_init: np.ndarray):
         """
         :param x_init:
@@ -93,58 +77,22 @@ class ClustersDataSpaceFeatures(ClustersDataSpace, ABC):
         """
         super().__init__(x_init, y_init)
         self.features_init = features_init.copy()
-        self.data_ration = np.concatenate((ClustersData.array_rationing(self.x_init).reshape(-1, 1),
-                                     ClustersData.array_rationing(self.y_init).reshape(-1, 1),
-                                     ClustersData.array_rationing(self.features_init)), axis=1)
+        self.data_ration = np.concatenate((ClustersData.array_rationing(self.x_init),
+                                           ClustersData.array_rationing(self.y_init),
+                                           ClustersData.array_rationing(self.features_init)), axis=1)
 
     def get_cluster_name(self, cluster_num):
-        super().get_cluster_name(cluster_num)
-        return str(cluster_num)
+        self.get_statistic_for_each_cluster()
+        return f'number: {cluster_num}\n' \
+               f'mean: {self.mean_of_each_cluster[cluster_num]}\n' \
+               f'std: {self.std_of_each_cluster[cluster_num]}'
 
 
 class ClustersDataSpaceFeaturesEuclidean(MetricsMixin, ClustersDataSpaceFeatures):
-    def get_cluster_name(self, cluster_num):
-        pass
-
     def __init__(self, x_init: np.ndarray, y_init: np.ndarray, features_init: np.ndarray):
         super().__init__(x_init, y_init, features_init)
-
-    def distance(self, point):
-        return self.euclidean_distance(point)
 
     def distance(self, point1, point2=None):
         return self.euclidean_distance(point1, point2)
 
 
-
-#
-# class ClustersDataSpaceTime(ClustersDataSpace, ABC):
-#     def __init__(self, x_init: np.ndarray, y_init: np.ndarray, time_init: np.ndarray):
-#         super().__init__(x_init, y_init)
-#         if x_init.shape != time_init.shape:
-#             raise ValueError('x_init and time_init must be the same dimension')
-#         self.time_init = time_init.copy()
-#         self.data_ration = np.array([ClustersData.array_rationing(self.x_init),
-#                                      ClustersData.array_rationing(self.y_init),
-#                                      ClustersDataSpaceTime._array_rationing_time(self.time_init)]).transpose()
-#
-#     @staticmethod
-#     def _array_rationing_time(array):
-#         time = np.array(
-#             [datetime.timedelta(hours=x.hour, minutes=x.minute, seconds=x.second).total_seconds() for x in array]
-#         )
-#         return ClustersData.array_rationing(time)
-#
-#     def get_cluster_name(self, cluster_num):
-#         times = [self.time_init[i] for i, x in enumerate(self.cluster_numbers) if x == cluster_num]
-#         min_time = str(min(times))
-#         max_time = str(max(times))
-#         return ' '.join([str(self.cluster_numbers[cluster_num]), min_time, max_time])
-
-#
-# class ClustersDataSpaceTimeEuclidean(MetricsMixin, ClustersDataSpaceTime):
-#     def __init__(self, x_init: np.ndarray, y_init: np.ndarray, time_init: np.ndarray):
-#         super().__init__(x_init, y_init, time_init)
-#
-#     def distance(self, point: np.ndarray):
-#         return self.euclidean_distance(point)
