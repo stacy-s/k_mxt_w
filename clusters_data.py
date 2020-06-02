@@ -28,6 +28,7 @@ class ClustersData(ABC):
 class MetricsMixin:
     data_ration = None
     time_init = None
+    factor = None
 
     def euclidean_distance(self, point1, point2=None):
         def euclidean_distance_between_point_array(num_point):
@@ -40,6 +41,20 @@ class MetricsMixin:
             return euclidean_distance_between_point_array(num_point=point1)
         else:
             return euclidean_distance_between2points(point1=point1, point2=point2)
+
+    def euclidean_distance_using_factor(self, point1, point2=None):
+        def euclidean_distance_between_point_array(num_point):
+            return np.sqrt(np.sum(((self.data_ration - self.data_ration[num_point]) * self.factor) ** 2, axis=1))
+
+        def euclidean_distance_between2points(point1, point2):
+            return np.sqrt(np.sum(((self.data_ration[point1] - self.data_ration[point2]) * self.factor) ** 2))
+
+        if point2 is None:
+            return euclidean_distance_between_point_array(num_point=point1)
+        else:
+            return euclidean_distance_between2points(point1=point1, point2=point2)
+
+
 
 
 class ClustersDataSpace(ClustersData, ABC):
@@ -82,10 +97,7 @@ class ClustersDataSpaceFeatures(ClustersDataSpace, ABC):
                                            ClustersData.array_rationing(self.features_init)), axis=1)
 
     def get_cluster_name(self, cluster_num):
-        self.get_statistic_for_each_cluster()
-        return f'number: {cluster_num}\n' \
-               f'mean: {self.mean_of_each_cluster[cluster_num]}\n' \
-               f'std: {self.std_of_each_cluster[cluster_num]}'
+        pass
 
 
 class ClustersDataSpaceFeaturesEuclidean(MetricsMixin, ClustersDataSpaceFeatures):
@@ -94,5 +106,14 @@ class ClustersDataSpaceFeaturesEuclidean(MetricsMixin, ClustersDataSpaceFeatures
 
     def distance(self, point1, point2=None):
         return self.euclidean_distance(point1, point2)
+
+
+class ClustersDataSpaceFeaturesEuclideanUsingFactor(MetricsMixin, ClustersDataSpaceFeatures):
+    def __init__(self, x_init: np.ndarray, y_init: np.ndarray, features_init: np.ndarray, factor):
+        super().__init__(x_init, y_init, features_init)
+        self.factor = factor.copy()
+
+    def distance(self, point1, point2=None):
+        return self.euclidean_distance_using_factor(point1, point2)
 
 
