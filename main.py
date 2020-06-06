@@ -2,11 +2,17 @@ import logging
 import time
 import numpy as np
 import os
+import plotly.express as px
+import sklearn.datasets
+import sklearn.metrics.cluster
 
 import clustering_algorithms
 import clusters_data
 import data
 import draw
+
+import cProfile
+import re
 
 
 logger = logging.getLogger('k_mxt_w')
@@ -20,37 +26,38 @@ def main():
     fh.setFormatter(formatter)
     logger.addHandler(fh)
     logger.info('Program started')
-    # try:
-    filename = '../data/homegate_month_living_dropna.csv'
-    data_property = data.DataPropertyImportSpace(filename=filename)
+    try:
+        # filename = '../data/homegate_month_living_dropna.csv'
+        # data_property = data.DataPropertyImportSpace(filename=filename)
+        #
+        # features_list = ['price']
+        # x, y, features = data_property.get_data(features_list=features_list)
+        for k in [9]:
+            for eps in [0.8]:
+                coord, labels = sklearn.datasets.make_blobs(n_samples=200, random_state=0, cluster_std=0.5)
+                clusters = clusters_data.ClustersDataSpaceEuclidean(x_init=coord[:, 0], y_init=coord[:, 1])
+                alg = clustering_algorithms.K_MXT_gauss(k=k, eps=eps, clusters_data=clusters)
+                start_time = time.time()
+                alg()
+                end_time = time.time()
+                print(f'k-{k}, eps-{eps}, time-{end_time - start_time}')
+                print(f'ARI-{sklearn.metrics.cluster.adjusted_rand_score(clusters.cluster_numbers, labels)}')
+        #         data.DataSave.arrays_to_csv(source_filename = filename,
+        #                                     new_filename=f'./results/{os.path.basename(filename)}_k_{k}_eps_{eps}.csv',
+        #                                     cluster_numbers=clusters.cluster_numbers)
+        # draw.Draw.draw_points(filename=filename, lat='latitude', lon='longitude', hover_name='price',
+        #                       hover_data=['rooms', 'url', 'property_type'],
+        #                       color='price',
+        #                       color_continuous_scale=px.colors.cyclical.HSV)
+        # draw.Draw.draw_points(filename=filename, lat='latitude', lon='longitude',
+        #                       hover_name='rent_per_room',
+        #                       hover_data=['price', 'rooms'],
+        #                       color='rent_per_room',
+        #                       )
 
-    features_list = ['price']
-    x, y, features = data_property.get_data(features_list=features_list)
-    for k in [15]:
-        for eps in [0.1]:
-            clusters = clusters_data.ClustersDataSpaceFeaturesEuclidean(x_init=x, y_init=y, features_init=features)
-            alg = clustering_algorithms.K_MXT(k=k, eps=eps, clusters_data=clusters)
-            start_time = time.time()
-            alg()
-            end_time = time.time()
-            print(f'k-{k}, eps-{eps}, time-{end_time - start_time}')
-            clusters.cluster_numbers = clusters.cluster_numbers.reshape(-1, 1)
-            data.DataSave.arrays_to_csv(new_filename=f'./results/{os.path.basename(filename)}_k_{k}_eps_{eps}.csv',
-                                        lalitude=x, longitude=y, price=features,
-                                        cluster_numbers=clusters.cluster_numbers,
-                                        )
-    draw.Draw.draw_points(filename=filename, lat='latitude', lon='longitude', hover_name='price',
-                          hover_data=['rooms', 'url', 'property_type'],
-                          color='price')
-    # draw.Draw.draw_points(filename=filename, lat='latitude', lon='longitude',
-    #                       hover_name='rent_per_room',
-    #                       hover_data=['price', 'rooms'],
-    #                       color='rent_per_room',
-    #                       )
-
-    # except BaseException as e:
-    #     logger.error(e, exc_info=True)
-    # logger.info('Done!')
+    except BaseException as e:
+        logger.error(e, exc_info=True)
+    logger.info('Done!')
 
 
 if __name__ == '__main__':

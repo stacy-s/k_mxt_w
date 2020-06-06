@@ -27,12 +27,14 @@ class K_MXT(Clustering):
         logger.info(f'init has done.')
 
     def make_start_graph(self):
-        for v in range(self.clusters_data.num_of_data):
+        def get_neighbor(v):
             dst = self.clusters_data.distance(v)
             neighbor = np.where(dst <= self.eps)[0]
             index_v = np.argwhere(neighbor == v)
-            neighbor = np.delete(neighbor, index_v)
-            self.start_graph[v] = neighbor
+            self.start_graph[v] = np.delete(neighbor, index_v)
+
+        for v in range(self.clusters_data.num_of_data):
+            get_neighbor(v)
 
     def get_arc_weight(self, v, to):
         return np.intersect1d(self.start_graph[v], self.start_graph[to]).shape[0]
@@ -40,17 +42,16 @@ class K_MXT(Clustering):
     def make_k_graph(self):
         if any(x is None for x in self.start_graph):
             raise TypeError('self.start_graph do not have to consist None.')
+        if not self.eps > 0.0:
+            raise ValueError("eps must be positive.")
         np.random.seed(4000)
-        weights_v = []
+        edge_weights = None
 
         def get_k_max_arcs():
-            weights = np.array(weights_v, dtype=[('weight', float), ('vertex', int)])
-            if weights.shape[0] < self.k:
-                return weights['vertex']
-            # np.random.shuffle(weights)
-            # index_max = np.argpartition(weights['weight'], -self.k)[-self.k:]
-            weights.sort(order='weight')
-            weights = np.flip(weights)
+            if edge_weights.shape[0] < self.k:
+                return edge_weights['vertex']
+            edge_weights.sort(order='weight')
+            weights = np.flip(edge_weights)
             k_value = weights['weight'][self.k - 1]
             index_k_value = np.where(weights['weight'] == k_value)[0]
             index_k_value_min, index_k_value_max = index_k_value[0], index_k_value[-1]
@@ -58,9 +59,8 @@ class K_MXT(Clustering):
             return weights['vertex'][:self.k]
 
         for v in range(self.num_of_vertices):
-            weights_v = []
-            for neighbor in self.start_graph[v]:
-                weights_v.append((self.get_arc_weight(v, neighbor), neighbor))
+            iterable = ((self.get_arc_weight(v, neighbor), neighbor) for neighbor in self.start_graph[v])
+            edge_weights = np.fromiter(iterable, dtype=[('weight', float), ('vertex', int)])
             self.k_graph[v] = get_k_max_arcs()
 
     def __call__(self, *args, **kwargs):

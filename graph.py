@@ -40,10 +40,6 @@ class Graph:
             return num_ucc, processing_order
         return num_ucc
 
-    def run_dfs(self):
-        vertex_order = [x for x in range(self.num_vertices)]
-        return self.dfs(vertex_order=vertex_order, is_save_processing_order=False)
-
     def top_sort(self):
         vertex_order = [x for x in range(self.num_vertices)]
         order_top_sort = self.dfs(vertex_order=vertex_order, is_save_processing_order=True)[1]
