@@ -62,6 +62,7 @@ class K_MXT(Clustering):
             iterable = ((self.get_arc_weight(v, neighbor), neighbor) for neighbor in self.start_graph[v])
             edge_weights = np.fromiter(iterable, dtype=[('weight', float), ('vertex', int)])
             self.k_graph[v] = get_k_max_arcs()
+            edge_weights = None
 
     def __call__(self, *args, **kwargs):
         logger.info(f'clustering has started')
